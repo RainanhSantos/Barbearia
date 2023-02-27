@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final loading = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class LoginPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(50),
-              //Objetos tela login
+              //Login screen objects
               child: Column(
                 children: [
                   SizedBox(
@@ -38,8 +39,14 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(
                     height: 40,
                   ),
-                  //E-mail
+                  //Box E-mail
                   TextFormField(
+                    validator: (String? value){
+                      if(value == null) {
+                        return 'E-mail Obrigatório!';
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(6, 0, 6, 0),
@@ -62,8 +69,14 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(
                     height: 40,
                   ),
-                  //Senha
+                  //Box password
                   TextFormField(
+                    validator: (String? value){
+                      if(value == null) {
+                        return 'Senha Obrigatória!';
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.text,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -97,6 +110,34 @@ class LoginPage extends StatelessWidget {
                       onPressed: (){},
                     ),
                   ),
+
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black45,
+                          ),
+                          child: AnimatedBuilder(
+                            animation: loading,
+                            builder: (context, _) {
+                              return loading.value
+                              ? const SizedBox(
+                                width: 21,
+                                height: 20,
+                                child: CircularProgressIndicator(),
+                              )
+                              : const Text('Entrar');
+                            }
+                          ),
+                          onPressed: () => loading.value = !loading.value,
+                        ),
+                      ),
+                      ),
+                  ),
+
                   const SizedBox(
                     height: 40,
                   ),
